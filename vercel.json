@@ -20,7 +20,7 @@
     },
     {
       "src": "/(.*)",
-      "dest": "TedX_main/$1"
+      "dest": "TedX_main/dist/$1"
     }
   ]
 }

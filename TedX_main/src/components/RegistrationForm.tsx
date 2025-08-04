@@ -48,13 +48,9 @@ const RegistrationForm = ({ onBack, onSubmit }: RegistrationFormProps) => {
     setIsSubmitting(true);
     
     try {
-      // Use URL constructor for more robust path concatenation
-      const url = new URL('/register', window.location.origin);
-      if (API_URL) {
-        url.pathname = `${API_URL}${url.pathname}`;
-      }
-
-      const response = await fetch(url.toString(), {
+      const url = `${API_URL}/register`;
+      
+      const response = await fetch(url, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),

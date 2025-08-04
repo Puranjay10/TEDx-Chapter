@@ -1,4 +1,3 @@
-// This file is located at backend/index.js
 
 const express = require('express');
 const { v4: uuidv4 } = require('uuid');
