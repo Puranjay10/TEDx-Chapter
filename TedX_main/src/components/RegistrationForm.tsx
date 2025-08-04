@@ -19,9 +19,9 @@ const RegistrationForm = ({ onBack, onSubmit }: RegistrationFormProps) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
 
-  // FIX: Correct environment variable fallback for Vercel deployment
-  // In Vercel, VITE_API_URL is undefined, so it will correctly use '/api'
-  // Locally, it will correctly use 'http://localhost:4000'
+  // FIX: Use '/api' as the fallback for Vercel deployment.
+  // In Vercel, VITE_API_URL is undefined, so it will correctly use '/api'.
+  // Locally, it will correctly use 'http://localhost:4000'.
   const API_URL = import.meta.env.VITE_API_URL || '/api';
 
   const handleSubmit = async (e: React.FormEvent) => {
