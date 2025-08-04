@@ -19,7 +19,9 @@ const RegistrationForm = ({ onBack, onSubmit }: RegistrationFormProps) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
 
-  // Correct environment variable for the API URL
+  // FIX: Correct environment variable fallback for Vercel deployment
+  // In Vercel, VITE_API_URL is undefined, so it will correctly use '/api'
+  // Locally, it will correctly use 'http://localhost:4000'
   const API_URL = import.meta.env.VITE_API_URL || '/api';
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -46,17 +48,20 @@ const RegistrationForm = ({ onBack, onSubmit }: RegistrationFormProps) => {
     setIsSubmitting(true);
     
     try {
-      // The API endpoint should be a single, non-redundant path
-      // This will correctly resolve to 'http://localhost:4000/register' locally
-      // and '/api/register' in production on Vercel
-      const response = await fetch(`${API_URL}/register`, {
+      // Use URL constructor for more robust path concatenation
+      const url = new URL('/register', window.location.origin);
+      if (API_URL) {
+        url.pathname = `${API_URL}${url.pathname}`;
+      }
+
+      const response = await fetch(url.toString(), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
       });
       
       if (!response.ok) {
-        throw new Error('Failed to register');
+        throw new Error(`HTTP error! Status: ${response.status}`);
       }
       
       const data = await response.json();
@@ -68,6 +73,7 @@ const RegistrationForm = ({ onBack, onSubmit }: RegistrationFormProps) => {
         variant: "success"
       });
     } catch (error) {
+      console.error("Fetch Error:", error);
       setIsSubmitting(false);
       toast({
         title: "Registration Failed",
