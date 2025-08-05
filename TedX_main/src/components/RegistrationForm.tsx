@@ -19,10 +19,7 @@ const RegistrationForm = ({ onBack, onSubmit }: RegistrationFormProps) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
 
-  // FIX: Use '/api' as the fallback for Vercel deployment.
-  // In Vercel, VITE_API_URL is undefined, so it will correctly use '/api'.
-  // Locally, it will correctly use 'http://localhost:4000'.
-  const API_URL = import.meta.env.VITE_API_URL || '/api';
+  const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:4000';
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -48,16 +45,14 @@ const RegistrationForm = ({ onBack, onSubmit }: RegistrationFormProps) => {
     setIsSubmitting(true);
     
     try {
-      const url = `${API_URL}/register`;
-      
-      const response = await fetch(url, {
+      const response = await fetch(`${BACKEND_URL}/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
       });
       
       if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
+        throw new Error('Failed to register');
       }
       
       const data = await response.json();
@@ -69,7 +64,6 @@ const RegistrationForm = ({ onBack, onSubmit }: RegistrationFormProps) => {
         variant: "success"
       });
     } catch (error) {
-      console.error("Fetch Error:", error);
       setIsSubmitting(false);
       toast({
         title: "Registration Failed",

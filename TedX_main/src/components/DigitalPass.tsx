@@ -17,15 +17,13 @@ interface DigitalPassProps {
   userData: {
     name: string;
     email: string;
+    passId: string; // Added passId to the interface
   };
   onBack: () => void;
   onNewRegistration: () => void;
 }
 
 const DigitalPass = ({ userData, onBack, onNewRegistration }: DigitalPassProps) => {
-  // Generate a unique pass ID (in a real app, this would come from backend)
-  const passId = `TEDx-${Date.now().toString(36).toUpperCase()}`;
-
   // Create a ref to reference the Card DOM element
   const passRef = useRef<HTMLDivElement>(null);
   const [isDownloading, setIsDownloading] = useState(false);
@@ -67,7 +65,7 @@ const DigitalPass = ({ userData, onBack, onNewRegistration }: DigitalPassProps) 
         pdf.text('EVENT PASS', margin + width - 8, yPos + 12, { align: 'right' });
         pdf.setFontSize(10);
         pdf.setTextColor(255, 255, 255);
-        pdf.text(passId, margin + width - 8, yPos + 18, { align: 'right' });
+        pdf.text(userData.passId, margin + width - 8, yPos + 18, { align: 'right' });
 
         // Add event title
         yPos += 40;
@@ -105,7 +103,7 @@ const DigitalPass = ({ userData, onBack, onNewRegistration }: DigitalPassProps) 
         
         pdf.setFontSize(10);
         pdf.setTextColor(255, 255, 255);
-        pdf.text('March 15, 2024 • 6:00 PM', margin + 14, yPos);
+        pdf.text('August 6, 2025 • 6:00 PM', margin + 14, yPos);
         yPos += 8;
         pdf.text('University Auditorium', margin + 14, yPos);
         yPos += 8;
@@ -183,7 +181,7 @@ const DigitalPass = ({ userData, onBack, onNewRegistration }: DigitalPassProps) 
               />
               <div className="text-right">
                 <div className="text-xs text-tedx-white/70 uppercase tracking-wider">Event Pass</div>
-                <div className="text-sm font-mono text-tedx-white">{passId}</div>
+                <div className="text-sm font-mono text-tedx-white">{userData.passId}</div>
               </div>
             </div>
 
@@ -192,7 +190,7 @@ const DigitalPass = ({ userData, onBack, onNewRegistration }: DigitalPassProps) 
               <h3 className="text-2xl font-bold text-tedx-white mb-1">
                 TEDx Community Talk
               </h3>
-              <p className="text-tedx-white/80 text-sm">Ideas Worth Spreading</p>
+              <p className="text-tedx-white/80 text-sm">Ideas Change Everything</p>
             </div>
 
             {/* Attendee Info */}
@@ -211,7 +209,7 @@ const DigitalPass = ({ userData, onBack, onNewRegistration }: DigitalPassProps) 
             <div className="border-t border-tedx-white/20 pt-6 space-y-3">
               <div className="flex items-center gap-3 text-tedx-white">
                 <Calendar className="w-4 h-4" />
-                <span className="text-sm">March 15, 2024 • 6:00 PM</span>
+                <span className="text-sm">August 6, 2025 • 6:00 PM</span>
               </div>
               <div className="flex items-center gap-3 text-tedx-white">
                 <MapPin className="w-4 h-4" />
